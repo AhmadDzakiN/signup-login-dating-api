@@ -1,35 +1,26 @@
 package main
 
 import (
-	"net/http"
+	"log"
 	"signup-login-bumble/config"
-	"signup-login-bumble/service"
-
-	"github.com/gin-gonic/gin"
+	auth "signup-login-bumble/domain/auth"
+	"signup-login-bumble/router"
 )
-
-func setupRouter(svc service.Service) *gin.Engine {
-	// Disable Console Color
-	// gin.DisableConsoleColor()
-	r := gin.Default()
-
-	// Ping test
-	r.GET("/ping", func(c *gin.Context) {
-		c.String(http.StatusOK, "pong")
-	})
-
-	r.POST("/register", svc.Register)
-	r.POST("/login", svc.Login)
-
-	return r
-}
 
 func main() {
 	config.LoadEnv()
-	db, _ := config.ConnectDatabase()
-	svc := service.NewService(db)
+	db, err := config.ConnectDatabase()
+	if err != nil {
+		log.Fatal("Failed to connect to database", err)
+		return
+	}
 
-	r := setupRouter(svc)
+	router := router.Router()
+
+	authSvc := auth.NewAuthService(db)
+	authRoute := auth.NewAuthRoute(authSvc)
+	authRoute.AuthRoute(router)
+
 	// Listen and Server in 0.0.0.0:8080
-	r.Run(":8080")
+	router.Run(":8080")
 }
