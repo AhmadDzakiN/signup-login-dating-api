@@ -24,3 +24,11 @@ type User struct {
 	Location string `gorm:"not null"`
 	Age      int    `gorm:"not null"`
 }
+
+type GetUserResponse struct {
+	ID       string `json:"id"`
+	Fullname string `json:"fullname"`
+	Gender   string `json:"gender"`
+	Location string `json:"location"`
+	Age      int    `json:"age"`
+}

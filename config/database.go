@@ -11,6 +11,8 @@ import (
 	"gorm.io/gorm/logger"
 )
 
+var DB *gorm.DB
+
 func ConnectDatabase() (db *gorm.DB, err error) {
 	connString := fmt.Sprintf(
 		"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Jakarta",
@@ -44,6 +46,8 @@ func ConnectDatabase() (db *gorm.DB, err error) {
 	pgsqlDB.SetMaxOpenConns(maxPoolSize)
 	pgsqlDB.SetConnMaxLifetime(time.Duration(connMaxLifeTime * int(time.Second)))
 	pgsqlDB.SetMaxIdleConns(maxIdleCons)
+
+	DB = db
 
 	return
 }

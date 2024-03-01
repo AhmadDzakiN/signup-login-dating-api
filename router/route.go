@@ -12,6 +12,9 @@ func Router() (router *gin.Engine) {
 		AllowMethods:     []string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete},
 		AllowCredentials: true,
 		AllowHeaders:     []string{"Content-Type", "Authorization", "Content-Length"},
+		AllowOriginFunc: func(origin string) bool {
+			return true
+		},
 	}
 
 	corsOpt := cors.New(corsConfig)
