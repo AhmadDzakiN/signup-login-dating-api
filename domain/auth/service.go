@@ -88,7 +88,7 @@ func (s *AuthService) Login(ctx *gin.Context) {
 	getUser := s.Db.First(&user, "username = ?", loginPayload.Username)
 	if getUser.Error != nil {
 		if getUser.Error == gorm.ErrRecordNotFound {
-			ctx.JSON(http.StatusNotFound, gin.H{"status": "error", "error": getUser.Error.Error()})
+			ctx.JSON(http.StatusNotFound, gin.H{"status": "error", "error": "User not found"})
 			return
 		}
 		ctx.JSON(http.StatusInternalServerError, gin.H{"status": "error", "error": getUser.Error.Error()})

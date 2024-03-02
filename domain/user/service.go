@@ -23,7 +23,7 @@ func (s *UserService) GetUserByID(ctx *gin.Context) {
 	getUserByID := s.Db.First(&user, "id = ?", userID)
 	if getUserByID.Error != nil {
 		if getUserByID.Error == gorm.ErrRecordNotFound {
-			ctx.JSON(http.StatusNotFound, gin.H{"status": "error", "error": getUserByID.Error.Error()})
+			ctx.JSON(http.StatusNotFound, gin.H{"status": "error", "error": "User not found"})
 			return
 		}
 		ctx.JSON(http.StatusInternalServerError, gin.H{"status": "error", "error": getUserByID.Error.Error()})
